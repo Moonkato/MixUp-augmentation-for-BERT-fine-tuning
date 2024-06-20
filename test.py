@@ -9,7 +9,9 @@ from sklearn.metrics import classification_report
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import BertForSequenceClassification, BertTokenizer
 
-from data_preparation import test_data_main
+dataset = load_dataset("rotten_tomatoes")
+test_data_main = dataset['test'].map(tokenizer_function, batched=True)
+test_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
 
 logging.info("Preparing to load model")
 

@@ -114,11 +114,9 @@ row_train_data = dataset['train']
 
 train_data_main = dataset['train'].map(tokenizer_function, batched=True)
 validation_data_main = dataset['validation'].map(tokenizer_function, batched=True)
-test_data_main = dataset['test'].map(tokenizer_function, batched=True)
 
 train_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
 validation_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
-test_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
 
 row_train_data = row_train_data.shuffle(seed=42)
 row_train_data = row_train_data.select(range(3500))

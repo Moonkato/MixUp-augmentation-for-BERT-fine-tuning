@@ -1,4 +1,5 @@
 import logging
+from datasets import load_dataset
 
 import numpy as np
 import torch
@@ -8,6 +9,12 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import BertForSequenceClassification, BertTokenizer
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+
+# Функция токенизации текста
+def tokenizer_function(data):
+    return tokenizer(data['text'], return_tensors='pt', padding="max_length", truncation=True)
 
 dataset = load_dataset("rotten_tomatoes")
 test_data_main = dataset['test'].map(tokenizer_function, batched=True)

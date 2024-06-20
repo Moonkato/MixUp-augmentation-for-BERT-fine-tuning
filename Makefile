@@ -7,10 +7,10 @@ build:
 
 train: build
 	echo "Запуск процесса обучения модели"
-	docker run -it --rm --name $(IMAGE_NAME) $(IMAGE_NAME) python train.py
+	docker run -it --rm -v .:/usr/src/app --name $(IMAGE_NAME) $(IMAGE_NAME) python train.py
 
 test: build
 	echo "Запуск процесса тестирования модели"
-	docker run -it --rm --name $(IMAGE_NAME) $(IMAGE_NAME) python test.py
+	docker run -it --rm -v .:/usr/src/app --name $(IMAGE_NAME) $(IMAGE_NAME) python test.py
 
 fullrun: train test

@@ -1,3 +1,4 @@
+import logging
 import random
 
 import numpy as np
@@ -56,6 +57,8 @@ trainer = Trainer(model=model,
                   train_dataset=train_dataset,
                   eval_dataset=validation_dataset,
                   compute_metrics=compute_metrics)
+
+logging.info("Training process begins")
 
 trainer.train()
 

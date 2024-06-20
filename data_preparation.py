@@ -1,5 +1,5 @@
-import random
 import logging
+import random
 
 import torch
 from datasets import load_dataset
@@ -13,6 +13,7 @@ logging.info("Downloading dataset")
 dataset = load_dataset("rotten_tomatoes")
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+
 
 # Оборачиваем токенизированные текстовые данные в torch Dataset
 class Data(torch.utils.data.Dataset):
@@ -118,11 +119,13 @@ validation_data_main = dataset['validation'].map(tokenizer_function, batched=Tru
 train_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
 validation_data_main.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids', 'label'])
 
+logging.info("Augmentation process begins")
 row_train_data = row_train_data.shuffle(seed=42)
 row_train_data = row_train_data.select(range(3500))
 
 augmented_data = data_augmentation(row_train_data)
 
+logging.info("Collecting train and validation datasets")
 original_data, original_labels = from_tensor_to_list(train_data_main)
 aug_data, aug_labels = from_tensor_to_list(augmented_data)
 train_data = original_data + aug_data

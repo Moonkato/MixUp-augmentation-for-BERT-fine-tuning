@@ -1,10 +1,16 @@
-setup:
-	python3 -m venv venv
-	venv/bin/pip install -r requirements.txt
+IMAGE_NAME = ml-test-task
+CONTAINER_NAME = ml-test-task-app
 
-run: setup
-	venv/bin/pip train.py
-	venv/bin/pip test.py
+build:
+	echo "Создание/обновление docker-образа"
+	docker build -t $(IMAGE_NAME) .
 
-test: setup
-	venv/bin/pip test.py
+train: build
+	echo "Запуск процесса обучения модели"
+	docker run -it --rm --name $(IMAGE_NAME) $(IMAGE_NAME) python train.py
+
+test: build
+	echo "Запуск процесса тестирования модели"
+	docker run -it --rm --name $(IMAGE_NAME) $(IMAGE_NAME) python test.py
+
+fullrun: train test
